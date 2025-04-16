@@ -1,6 +1,8 @@
 const express = require('express');
+const sql = require('mssql');
 const bodyParser = require('body-parser');
 const path = require('path');
+require('dotenv').config();
 const { poolPromise } = require('./db');
 
 const app = express();
@@ -9,9 +11,20 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'views')));
 
+const dbConfig = {
+   user: process.env.SQL_USER,
+   password: process.env.SQL_PASSWORD,
+   server: process.env.SQL_SERVER,
+   database: process.env.SQL_DATABASE,
+   options: {
+     encrypt: true,
+     enableArithAbort: true,
+   },
+ };
+
 // GET homepage form
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+    res.sendFile(path.join(__dirname, 'views', 'form.html'));
 });
 
 // POST form data
