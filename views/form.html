@@ -32,11 +32,10 @@
     <div id="entries"></div>
 </div>
 
-
     <script>
     // Handle form submission via JavaScript (AJAX)
     document.getElementById('infoForm').addEventListener('submit', async (e) => {
-        e.preventDefault(); // Prevent default form submit
+        e.preventDefault();
 
         const form = e.target;
         const formData = new FormData(form);
@@ -57,9 +56,7 @@
             responseMsg.textContent = `Thanks, ${name}! Your info was saved.`;
             responseMsg.classList.remove('d-none');
             form.reset();
-
-            // Auto-refresh entries table
-            loadEntries();
+            loadEntries(); // Auto-refresh entries
         } else {
             responseMsg.className = 'alert alert-danger';
             responseMsg.textContent = 'There was an error saving your info.';
@@ -67,10 +64,10 @@
         }
     });
 
-    // Handle "Show Entries" button click
+    // "Show Entries" button click
     document.getElementById('showEntries').addEventListener('click', loadEntries);
 
-    // Function to fetch and display entries
+    // Load entries from server
     async function loadEntries() {
         const response = await fetch('/entries');
         const data = await response.json();
@@ -84,7 +81,7 @@
         }
 
         const table = document.createElement('table');
-        table.className = 'table table-bordered';
+        table.className = 'table table-bordered mt-3';
 
         const thead = `
             <thead class="table-light">
@@ -106,6 +103,7 @@
         entriesDiv.appendChild(table);
     }
 </script>
+
 
 </body>
 </html>
