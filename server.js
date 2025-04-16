@@ -34,10 +34,22 @@ app.post('/submit', async (req, res) => {
   try {
     await sql.connect(dbConfig);
     await sql.query`INSERT INTO Users (Name, Email) VALUES (${name}, ${email})`;
-    res.send(`<h3>Thanks, ${name}! Your info was saved.</h3>`);
+    res.status(200).json({ success: true, message: 'Data saved' });
   } catch (err) {
     console.error('DB Error:', err);
-    res.status(500).send('Error saving to database.');
+    res.status(500).json({ success: false, message: 'Error saving to database.' });
+  }
+});
+
+// Route to fetch all user entries
+app.get('/entries', async (req, res) => {
+  try {
+    await sql.connect(dbConfig);
+    const result = await sql.query`SELECT * FROM Users`;
+    res.json(result.recordset);
+  } catch (err) {
+    console.error('DB Fetch Error:', err);
+    res.status(500).send('Error retrieving data from database.');
   }
 });
 
